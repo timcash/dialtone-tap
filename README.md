@@ -1,4 +1,4 @@
-# repl-nats-tap
+# dialtone-tap
 
 Passive NATS tap for Dialtone REPL traffic.
 
@@ -16,7 +16,7 @@ This tool is intentionally independent from the `dialtone` repo:
 ## Build
 
 ```bash
-go build -o repl-nats-tap .
+go build -o dialtone-tap .
 ```
 
 ## Run
@@ -24,25 +24,25 @@ go build -o repl-nats-tap .
 Tap all REPL subjects:
 
 ```bash
-./repl-nats-tap --upstream nats://127.0.0.1:4222 --subjects 'repl.>'
+./dialtone-tap --upstream nats://127.0.0.1:4222 --subjects 'repl.>'
 ```
 
 Tap only room traffic:
 
 ```bash
-./repl-nats-tap --subjects 'repl.room.>'
+./dialtone-tap --subjects 'repl.room.>'
 ```
 
 Tap command stream + room stream:
 
 ```bash
-./repl-nats-tap --subjects 'repl.cmd,repl.room.>'
+./dialtone-tap --subjects 'repl.cmd,repl.room.>'
 ```
 
 Show raw payloads:
 
 ```bash
-./repl-nats-tap --raw --subjects 'repl.>'
+./dialtone-tap --raw --subjects 'repl.>'
 ```
 
 ## Behavior

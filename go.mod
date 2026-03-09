@@ -1,4 +1,4 @@
-module repl-nats-tap
+module dialtone-tap
 
 go 1.24
 

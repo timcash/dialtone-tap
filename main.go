@@ -29,7 +29,7 @@ func main() {
 	var (
 		upstream       = flag.String("upstream", "nats://127.0.0.1:4222", "Upstream NATS URL")
 		subjectsCSV    = flag.String("subjects", "repl.>", "Comma-separated subject patterns")
-		name           = flag.String("name", "repl-nats-tap", "NATS client name")
+		name           = flag.String("name", "dialtone-tap", "NATS client name")
 		reconnectWait  = flag.Duration("reconnect-wait", 1200*time.Millisecond, "Reconnect wait interval")
 		showRaw        = flag.Bool("raw", false, "Print raw payloads instead of REPL-style formatting")
 		showSubject    = flag.Bool("show-subject", true, "Prefix output lines with subject")
