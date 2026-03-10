@@ -49,6 +49,7 @@ Show raw payloads:
 
 - If NATS is down at startup, client keeps retrying.
 - If NATS disconnects later, client auto-reconnects.
+- Initial subscribe flush timeout is treated as a warning (process stays alive and reconnects).
 - Messages are printed in a REPL-style format for `repl.*` frames.
 - Unknown/non-JSON payloads are printed as plain text.
 

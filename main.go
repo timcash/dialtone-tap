@@ -51,6 +51,9 @@ func main() {
 	}
 	if *showReconnects {
 		opts = append(opts,
+			nats.ConnectHandler(func(nc *nats.Conn) {
+				fmt.Fprintf(os.Stderr, "TAP> connected: %s\n", nc.ConnectedUrl())
+			}),
 			nats.DisconnectErrHandler(func(_ *nats.Conn, err error) {
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "TAP> disconnected: %v\n", err)
@@ -78,7 +81,11 @@ func main() {
 		fatalf("initial connect failed: %v", err)
 	}
 	defer nc.Close()
-	fmt.Fprintf(os.Stderr, "TAP> connected: %s\n", nc.ConnectedUrl())
+	if nc.IsConnected() {
+		fmt.Fprintf(os.Stderr, "TAP> connected: %s\n", nc.ConnectedUrl())
+	} else {
+		fmt.Fprintln(os.Stderr, "TAP> waiting for upstream NATS (subscriptions queued)")
+	}
 
 	for _, subject := range subjects {
 		subj := subject
@@ -89,8 +96,9 @@ func main() {
 			fatalf("subscribe failed for %q: %v", subj, subErr)
 		}
 	}
-	if err := nc.Flush(); err != nil {
-		fatalf("nats flush failed: %v", err)
+	if err := nc.FlushTimeout(1200 * time.Millisecond); err != nil {
+		// Keep running: subscriptions are automatically sent on connect/reconnect.
+		fmt.Fprintf(os.Stderr, "TAP> warning: initial nats flush pending (%v); continuing in reconnect mode\n", err)
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
